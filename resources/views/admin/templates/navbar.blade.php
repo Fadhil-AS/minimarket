@@ -8,7 +8,11 @@
               <a class="dropdown-item" href="#">Settings</a>
               <a class="dropdown-item" href="#">Activity Log</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="login.html">Logout</a>
+              <form action="{{url('logout')}}" method="post">
+                @csrf
+                <button class="dropdown-item" type="submit">Logout</button>
+              </form>
+              
           </div>
       </li>
   </ul>
