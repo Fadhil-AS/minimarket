@@ -16,6 +16,7 @@
               <nav class="sb-sidenav-menu-nested nav">
                   <a class="nav-link" href="{{url('/barang')}}"><i class="fas fa-box-open"></i>&nbsp;Barang</a>
                   <a class="nav-link" href="{{url('/produk')}}"><i class="fab fa-empire"></i>&nbsp;Produk</a>
+                  <a class="nav-link" href="{{url('/kategori')}}"><i class="fas fa-archive"></i>&nbsp;Kategori</a>
                   <a class="nav-link" href="{{url('/pelanggan')}}"><i class="fas fa-users"></i>&nbsp;Pelanggan</a>
                   <a class="nav-link" href="{{url('/pemasokan')}}"><i class="fas fa-parachute-box"></i>&nbsp;Pemasok</a>
                   <a class="nav-link" href="{{url('/users')}}"><i class="fas fa-user"></i>&nbsp;User</a>

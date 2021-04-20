@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\MinimarketController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PelangganController;
@@ -37,6 +38,9 @@ Route::group(['middleware' => 'auth'], function(){
 
     // produk
     Route::resource('/produk', ProdukController::class)->except('create', 'show', 'edit');
+
+    // kategori
+    Route::resource('/kategori', KategoriController::class)->except('create', 'show', 'edit');
 
     // pelanggan
     Route::resource('/pelanggan', PelangganController::class)->except('create', 'show', 'edit');

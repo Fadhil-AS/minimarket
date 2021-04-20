@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KategoriController extends Controller
 {
@@ -13,7 +15,10 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $kategori = Kategori::all();
+        return view('admin.kategori.index', [
+            'kategori' => $kategori
+        ]);
     }
 
     /**
@@ -34,7 +39,22 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required'
+        ]);
+
+        $status = Kategori::create($request->all());
+        if($status){
+            return json_encode([
+                "status" => 1,
+                "message" => "Data berhasil disimpan!"
+            ]);
+        }else{
+            return json_encode([
+                "status" => 0,
+                "message" => "Data gagal disimpan!"
+            ]);
+        }
     }
 
     /**
@@ -68,7 +88,25 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required'
+        ]);
+
+        $status = DB::table('kategori')->where('id', $id)->update($request->all([
+            'nama_kategori'
+        ]));
+        
+        if($status){
+            return json_encode([
+                "status" => 1,
+                "message" => "Data berhasil diperbaharui!"
+            ]);
+        }else{
+            return json_encode([
+                "status" => 0,
+                "message" => "Data gagal diperbaharui!"
+            ]);
+        }
     }
 
     /**
@@ -79,6 +117,8 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $delete = DB::table('kategori')->where('id', $id)->delete();
+        if($delete) return 1;
+        else return 0;
     }
 }
