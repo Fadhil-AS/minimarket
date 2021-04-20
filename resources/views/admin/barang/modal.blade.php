@@ -50,7 +50,7 @@
               <div id="invalid-feedback-stok" class="invalid-feedback"></div>
             </div>
             <div class="form-group">
-              <input type="hidden" class="form-control" name="users_id" id="users_id" value="1">
+              <input type="hidden" class="form-control" name="users_id" id="users_id" value="{{auth()->user()->id}}">
             </div>
             <button type="submit" id="btn-submit" class="btn btn-primary">Simpan</button>
           </form>
