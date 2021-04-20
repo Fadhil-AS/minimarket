@@ -52,6 +52,20 @@
             <div class="form-group">
               <input type="hidden" class="form-control" name="users_id" id="users_id" value="{{auth()->user()->id}}">
             </div>
+            <div class="form-group">
+              <label for="keterangan">Keterangan</label>
+              <input type="text" class="form-control data" name="keterangan" id="keterangan" placeholder="Masukan keterangan" autocomplete="off">
+              <div id="invalid-feedback-keterangan" class="invalid-feedback"></div>
+            </div>
+            <div class="form-group">
+              <label for="kategori_id">Kategori</label>
+              <select name="kategori_id" id="kategori_id" class="form-control data">
+                @foreach ($kategori as $k)
+                  <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                @endforeach
+              </select>
+              <div id="invalid-feedback-kategori_id" class="invalid-feedback"></div>
+            </div>
             <button type="submit" id="btn-submit" class="btn btn-primary">Simpan</button>
           </form>
         </div>

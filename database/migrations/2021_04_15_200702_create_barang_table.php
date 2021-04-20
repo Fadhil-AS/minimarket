@@ -22,6 +22,8 @@ class CreateBarangTable extends Migration
             $table->double('harga_jual');
             $table->string('stok', 5);
             $table->foreignId('users_id');
+            $table->string('keterangan', 255);
+            $table->foreignId('kategori_id');
             $table->timestamps();
         });
     }

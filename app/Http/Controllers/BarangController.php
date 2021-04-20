@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Barang;
+use App\Models\Kategori;
 use App\Models\Produk;
 
 class BarangController extends Controller
@@ -20,10 +21,12 @@ class BarangController extends Controller
         $kode = ($lastId == null ? 'K00000001' : sprintf('K%08d', substr($lastId->kode_barang, 1)+1));
         $barang = Barang::all();
         $produk = Produk::all();
+        $kategori = Kategori::all();
         return view('admin.barang.index', [
             'kode' => $kode,
             'barang' => $barang,
-            'produk' => $produk
+            'produk' => $produk,
+            'kategori' => $kategori
         ]);
     }
 
@@ -110,7 +113,7 @@ class BarangController extends Controller
         ]);
 
         $status = DB::table('barang')->where('id', $id)->update($request->all([
-            'kode_barang', 'produk_id', 'nama_barang', 'satuan', 'harga_jual', 'stok', 'users_id'
+            'kode_barang', 'produk_id', 'nama_barang', 'satuan', 'harga_jual', 'stok', 'users_id', 'keterangan', 'kategori_id'
         ]));
 
         if($status){

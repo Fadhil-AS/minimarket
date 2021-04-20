@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Barang;
 use App\Models\Produk;
+use App\Models\Kategori;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -31,7 +32,9 @@ class BarangFactory extends Factory
             'satuan' => $this->faker->randomElement(['pcs', 'item', 'kardus']),
             'harga_jual' => $this->faker->numberBetween(1000, 100000),
             'stok' => $this->faker->numberBetween(1, 1000),
-            'users_id' => '1'
+            'users_id' => '1',
+            'keterangan' => $this->faker->randomElement(['10%', '20%', '30%', '40%', '50%', '60%', '80%', '90%']),
+            'kategori_id' => '1'
         ];
     }
 }

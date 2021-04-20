@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PemasokSeeder::class,
             ProdukSeeder::class,
             UserSeeder::class,
+            KategoriSeeder::class,
             BarangSeeder::class,
             PelangganSeeder::class
         ]);

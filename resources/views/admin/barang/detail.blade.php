@@ -13,6 +13,7 @@
           <p>Satuan: <span id="satuan" class="txt-detail"></span></p>
           <p>Stok: <span id="stok" class="txt-detail"></span></p>
           <p>Harga: <span id="harga_jual" class="txt-detail"></span></p>
+          <p>Keterangan: <span id="keterangan" class="txt-detail"></span></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
