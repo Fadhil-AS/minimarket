@@ -22,15 +22,15 @@
                         <div class="card-header">
                             <i class="fas fa-user"></i>
                             Users
-                            <button class="btn btn-sm btn-success float-right" data-toggle="modal" data-target="#create-users"><i class="fas fa-plus"></i> Tambah</button>
+                            <button href="#add" class="btn btn-sm btn-success float-right trigger" data-mode="add" data-title="Tambah User" data-toggle="modal" data-target="#form-modal"><i class="fas fa-plus"></i> Tambah</button>
                         </div>
 
                         @include('admin.templates.feedback')
-                        @include('admin.users.create')
+                        @include('admin.users.modal')
                         @include('admin.users.detail')
-                        @include('admin.users.edit')
-
+                        
                         <div class="card-body">
+                            <div hidden id="data">{{$users}}</div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="data-users" width="100%" cellspacing="0">
                                     <thead>
@@ -46,19 +46,18 @@
                                                 <td> {{$r->name}} </td>
                                                 <td>{{$r->email}}</td>
                                                 <td>
-                                                    <button class="btn btn-group">
+                                                    <div class="btn btn-group">
                                                         <a href="#detail" data-id="{{$r->id}}" class="btn btn-sm btn-dark mr-2 detail" data-toggle="modal" data-target="#detail-users"><i class="far fa-id-card"></i></a>
-                                                        <a href="#edit" data-id="{{$r->id}}" class="btn btn-sm btn-warning mr-2 trigger" data-toggle="modal" data-target="#edit-users"><i class="far fa-edit"></i></a>
-                                                        <form action="/admin/users/" method="post" id="delete-form">
-                                                            @method('delete')
+                                                        <button href="#edit" data-id="{{$r->id}}" class="btn btn-sm btn-warning mr-2 trigger" data-mode="edit" data-title="Edit User" data-toggle="modal" data-target="#form-modal"><i class="far fa-edit"></i></button>
+                                                        <form action="{{route('users.index')}}" method="post" id="delete-form">
                                                             @csrf
-                                                            <a href="#delete" data-id="{{$r->id}}" class="btn btn-sm btn-danger delete"><i class="far fa-trash-alt"></i></a>
+                                                            @method('delete')
+                                                            <button href="#delete" data-id="{{$r->id}}" data-mode="delete" class="btn btn-sm btn-danger delete trigger"><i class="far fa-trash-alt"></i></button>
                                                         </form>
-                                                    </button>
+                                                    </div>
                                                 </td>
                                           </tr>      
-                                        @endforeach
-                                      
+                                        @endforeach  
                                     </tbody>
                                 </table>
                             </div>
@@ -75,55 +74,105 @@
   @push('script')
   <script>
     $(function(){
+        let modal = {
+            "modal" : $('#form-modal'),
+            "label" : $('#modal-label')
+        }
+
         // dataTable
-        $('#data-users').DataTable({
+        let table = $('#data-users').DataTable({
             "paging" : true
         });
 
-        // tambah data
-        let formAdd = $('#add-form');
-        $('body').on('click', '#btn-tambah', function(event){
-            event.preventDefault();
-            console.log($('#' + formAdd.attr('id')).attr('action'));
-            console.log($('#' + formAdd.attr('id')).attr('method'));
-            console.log($('#' + formAdd.attr('id')).serialize());
-            jQuery.ajax({
-                url: $('#' + formAdd.attr('id')).attr('action'),
-                type: $('#' + formAdd.attr('id')).attr('method'),
-                data: $('#' + formAdd.attr('id')).serialize(),
-                error: function(result) {
-                    console.log(result);
-                    // defaultState();
-                    let error = result['responseJSON']['errors'];
-                    for (let buffer in error) {
-                        $('#' + buffer).addClass('is-invalid');
-                        $('div#invalid-feedback-' + buffer).text(error[buffer]);
-                    }
-                },
-                success: function(result) {
-                console.log(result);
-                    if (result) {
-                        // console.log('Data berhasil disimpan');
-                        Swal.fire({
-                            title: 'Data berhasil disimpan',
-                            icon: 'success'
-                        }).then((tambah) => {
-                            console.log(tambah);
-                            if (tambah) location.reload();
-                        });
-                    } else {
-                      Swal.fire({
-                            title: 'Data gagal disimpan',
-                            icon: 'error',
-                            button: 'Ok',
-                            setTimeout: 5000
-                        }).then((tambah) => {
-                            console.log(tambah);
-                            if (tambah) location.reload();
-                        });
-                    }
-                }
+        let form = $('form.form-users');
+        let input = $('.form-control.data');
+        let route = form.attr('action');
+
+        function request(route, type, data = null){
+            let buffer = null;
+            buffer = jQuery.ajax({
+                async: false,
+                url: route,
+                type: type,
+                data: data,
+            }).always(function(a, b, c){console.log(c)});
+            return buffer;
+        }
+
+        function justalert(icon, title, text){
+            Swal.fire(
+                title, text, icon
+            ).then((result)=>{
+                if(result.value) location.reload();
             });
+        }
+
+        $('body').on('click', 'button.trigger', function(event){
+            event.preventDefault();
+            let data = JSON.parse($('#data').text());
+            let mode = $(this).data('mode');
+            let id = $(this).data('id') ? $(this).data('id') : null;
+            console.log(data);
+            if(mode == "add"){
+                modal["label"].text($(this).data('title'));
+                for(let i = 0; i < input.length; i++){
+                    input.eq(i).attr('value', '');
+                }
+            }else if(mode == "edit"){
+                modal["label"].text($(this).data('title'));
+                data = data.find(obj => obj.id == id);
+                form.attr('action', `${route}/${id}`);
+                $('#method').attr('value', 'patch');
+                for(let i = 0; i < input.length; i++){
+                    input.eq(i).val(data[input.eq(i).attr('name')]).trigger("change");
+                }
+            }else if(mode == "delete"){
+                Swal.fire({
+                    title: 'Yakin ingin menghapus data ini?',
+                    text: "Anda tidak akan mendapatkan data kembali",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus data ini!'
+                }).then((result) => {
+                    if (result.value) {
+                        $('#method').attr('value', 'delete');
+                        let res = request(`${route}/${id}`, 'post', form.serialize());
+                        console.log(res);
+                        if(res['status'] == 200){
+                            justalert('success', 'Terhapus!', 'Data telah terhapus');
+                        }else{
+                            justalert('error', 'Gagal hapus data!', 'Data gagal dihapus');
+                        }
+                    }
+                    else if(result.dismiss == Swal.DismissReason.cancel){
+                        Swal.fire('Batal', 'Menghapus data dibatalkan!', 'error');
+                    }
+                });
+            }
+        });
+
+        $('body').on('click', '#btn-submit', function(event){
+            event.preventDefault();
+            let res = request(form.attr('action'), 'post', form.serialize());
+            console.log(res);
+            if(res['status'] == 200){
+                result = JSON.parse(res['responseText']);
+                if(result['status']){
+                    modal["modal"].modal('hide');
+                    justalert('success', 'Data tersimpan', result['message']);
+                }else{
+                    modal["modal"].modal('hide');
+                    justalert('error', 'Data gagal disimpan', result['message']);
+                }
+            }else{
+                let error = res['responseJSON']['errors'];
+                for (let buffer in error){
+                    $('#' + buffer).addClass('is-invalid');
+                    $('#invalid-feedback-' + buffer).text(error[buffer]);
+                }
+            }
         });
 
         // detail
@@ -135,108 +184,6 @@
             for (let i = 0; i < text.length; i++){
                 text.eq(i).text(data[text.eq(i).attr('id')]);
             }
-        });
-
-        // edit
-        let formEdit = $('#edit-form');
-        $('body').on('click', 'a.trigger', function(event){
-            event.preventDefault();
-            let defaultRoute = formEdit.attr('action');
-            let id = $(this).data('id') ? $(this).data('id') : null;
-            formEdit.attr('action', `${defaultRoute}/${id}`);
-            console.log($(this).data('id'));
-            let data = JSON.parse("{{ $users ?? '' }}".replaceAll('&quot;', "\""));
-            data = data.find(obj => obj.id == $(this).data('id'));
-            console.log(data);
-            let input = $('.form-control');
-            for (let i = 0; i < input.length; i++) {
-                input.eq(i).val(data[input.eq(i).attr('name')]).trigger('change');
-                // input.eq(i).input(data[input.eq(i).attr('id')]);
-            }
-        });
-
-        $('body').on('click', '#btn-edit', function(event){
-            event.preventDefault();
-            jQuery.ajax({
-                url: $('#' + formEdit.attr('id')).attr('action'),
-                type: $('#' + formEdit.attr('id')).attr('method'),
-                data: $('#' + formEdit.attr('id')).serialize(),
-                error: function(result) {
-                    // defaultState();
-                    let error = result['responseJSON']['errors'];
-                    for (let buffer in error) {
-                        $('#' + buffer).addClass('is-invalid');
-                        $('#invalid-feedback-' + buffer).text(error[buffer]);
-                    }
-                },
-                success: function(result) {
-                    console.log(result);
-                    if (result) {
-                        // console.log('Data berhasil disimpan');
-                        Swal.fire({
-                            title: 'Data berhasil disimpan',
-                            icon: 'success'
-                        }).then((update) => {
-                            console.log(update);
-                            if (update) location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Data gagal disimpan',
-                            icon: 'error',
-                            button: 'Ok',
-                            setTimeout: 5000
-                        }).then((update) => {
-                            console.log(update);
-                            if (update) location.reload();
-                        });
-                    }
-                }
-            });
-        });
-
-        // delete
-        let formDelete = $('#delete-form');
-        $('body').on('click', 'a.delete', function(event){
-            console.log('euyyyyy');
-            let id = $(this).data('id');
-            console.log(id);
-            Swal.fire({
-                title: 'Yakin ingin menghapus data ini?',
-                text: "Anda tidak akan mendapatkan data kembali",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus data ini!'
-            }).then((result) => {
-                if (result.value) {
-                    $.post({
-                        url: formDelete.attr('action') + id,
-                        type: 'post',
-                        data: formDelete.serialize(),
-                        error: function(result){
-                        console.log(result);
-                        Swal.fire({
-                            title: 'Data gagal dihapus',
-                            icon: 'error'
-                        }).then(function(dlt) {
-                            if(dlt) location.reload();
-                        });
-                        
-                        },
-                        success: function(result){
-                        Swal.fire({
-                            icon: 'success', 
-                            title: 'Data berhasil dihapus!'
-                        }).then(function(dlt) {
-                            if(dlt) location.reload();
-                        });
-                        
-                        }
-                    });
-                }
-            });
         });
     });
   </script>

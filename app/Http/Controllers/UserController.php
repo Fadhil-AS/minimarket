@@ -43,14 +43,24 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'level' => 'required'
         ]);
 
         $request['password'] = Hash::make($request['password']);
-        $add = User::create($request->all());
+        $status = User::create($request->all());
         
-        if($add) return 1;
-        else return 0;
+        if($status){
+            return json_encode([
+                "status" => 1,
+                "message" => "Data berhasil disimpan!"
+            ]);
+        }else{
+            return json_encode([
+                "status" => 0,
+                "message" => "Data gagal disimpan!"
+            ]);
+        }
     }
 
     /**
@@ -90,14 +100,24 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        $update = DB::table('users')->where('id', $id)->update([
+        $status = DB::table('users')->where('id', $id)->update([
             'name' => $request->name, 
             'email' => $request->email, 
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'level' => $request->level
         ]);
         
-        if($update) return 1;
-        else return 0;
+        if($status){
+            return json_encode([
+                "status" => 1,
+                "message" => "Data berhasil diperbaharui!"
+            ]);
+        }else{
+            return json_encode([
+                "status" => 0,
+                "message" => "Data gagal diperbaharui!"
+            ]);
+        }
     }
 
     /**

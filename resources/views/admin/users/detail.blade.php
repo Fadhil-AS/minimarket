@@ -10,6 +10,7 @@
         <div class="modal-body">
           <p>Nama: <span id="name" class="txt-detail"></span></p>
           <p>Email: <span id="email" class="txt-detail"></span></p>
+          <p>Level: <span id="level" class="txt-detail"></span></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

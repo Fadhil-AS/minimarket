@@ -45,11 +45,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('/pemasokan', PemasokController::class)->except('create', 'show', 'edit');
 
     // Users
-    Route::get('/admin/users', [UserController::class, "index"]);
-    Route::post('/admin/users', [UserController::class, "store"]);
-    Route::put('/admin/users/update/{id}', [UserController::class, "update"]);
-    Route::delete('/admin/users/{id}', [UserController::class, "destroy"]);
-
+    Route::resource('/users', UserController::class)->except('create', 'show', 'edit');
+    
     // Pembelian
     Route::get('/admin/pembelian', [PembelianController::class, "index"]);
 });
