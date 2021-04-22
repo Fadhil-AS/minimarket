@@ -10,6 +10,7 @@ use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PenarikanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,4 +54,9 @@ Route::group(['middleware' => 'auth'], function(){
     
     // Pembelian
     Route::get('/admin/pembelian', [PembelianController::class, "index"]);
+
+    // penarikan
+    Route::resource('/penarikan', PenarikanController::class)->except('create', 'show', 'edit');
+    Route::get('/penarikan/export/xls', [PenarikanController::class, "excel"]);
+    Route::get('/penarikan/export/pdf', [PenarikanController::class, "pdf"]);
 });
