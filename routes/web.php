@@ -53,7 +53,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('/users', UserController::class)->except('create', 'show', 'edit');
     
     // Pembelian
-    Route::get('/admin/pembelian', [PembelianController::class, "index"]);
+    Route::resource('/pembelian', PembelianController::class)->except('create', 'show', 'edit');
+    // Route::get('/admin/pembelian', [PembelianController::class, "index"]);
 
     // penarikan
     Route::resource('/penarikan', PenarikanController::class)->except('create', 'show', 'edit');

@@ -138,6 +138,6 @@ class PenarikanController extends Controller
     public function pdf(){
         $penarikan = Penarikan::all();
         $pdf = PDF::loadview('admin.penarikan.penarikan_pdf', ['penarikan' => $penarikan]);
-        return $pdf->stream('penarik.pdf');
+        return $pdf->download('penarikan.pdf');
     }
 }
