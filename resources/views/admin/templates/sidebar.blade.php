@@ -29,7 +29,7 @@
           </a>
           <div class="collapse" id="transaksi" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{url('/admin/pembelian')}}"><i class="fas fa-shopping-cart"></i>&nbsp;Pembelian</a>
+                <a class="nav-link" href="{{url('/pembelian')}}"><i class="fas fa-shopping-cart"></i>&nbsp;Pembelian</a>
             </nav>
           </div>
           <a class="nav-link" href="{{url('/penarikan')}}"><i class="fas fa-store-slash"></i>&nbsp;Penarikan Barang</a>

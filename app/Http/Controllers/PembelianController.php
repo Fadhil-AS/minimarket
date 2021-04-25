@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pembelian;
 use App\Models\Barang;
 use App\Models\Pemasok;
+use Illuminate\Support\Facades\Auth;
 
 class PembelianController extends Controller
 {
@@ -16,10 +17,12 @@ class PembelianController extends Controller
      */
     public function index()
     {
+        $kode = Pembelian::kodeOtomatis();
         $pembelian = Pembelian::all();
         $barang = Barang::all();
         $pemasok = Pemasok::all();
         return view('admin.pembelian.index', [
+            'kode' => $kode,
             'pembelian' => $pembelian,
             'barang' => $barang,
             'pemasok' => $pemasok
@@ -44,7 +47,12 @@ class PembelianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pembelian = [
+            'kode_masuk' => $request->kode_masuk,
+            'tgl_masuk' => $request->tgl_masuk,
+            'pemasok_id' => $request->pemasok_id,
+            'users_id' => Auth::id()
+        ];
     }
 
     /**

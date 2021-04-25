@@ -30,7 +30,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="kode_masuk">Kode Masuk</label>
-                                        <input type="text" class="form-control" name="kode_masuk" id="kode_masuk"  value="P{{str_shuffle(mt_rand(1, 99999999))}}" readonly>
+                                        <input type="text" class="form-control" name="kode_masuk" id="kode_masuk"  value="P{{$kode}}" readonly>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="tgl_masuk">Tanggal</label>
@@ -47,7 +47,7 @@
                                     <div class="form-group col-md-6">
                                         <button type="button" class="btn btn-success float-right mt-4" data-toggle="modal" data-target="#modal-barang"><i class="fas fa-plus"></i> Tambah Barang</button>
                                     </div>
-                                    <input type="hidden" name="users_id" id="users_id">
+                                    <input type="hidden" name="users_id" id="users_id" value="{{auth()->user()->id()}}">
                                 </div>
                             </form>
                         </div>

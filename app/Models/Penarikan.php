@@ -24,14 +24,5 @@ class Penarikan extends Model
         }
         return 0;
     }
-    // public static function kodeOtomatis(){
-    //     $kode = sprintf('%03d',random_int(1, 999));
-    //     $temp = [];
-    //     foreach(Penarikan::all(["kode"]) as $item){
-    //         array_push($temp, $item->kode);
-    //     }while(in_array($kode, $temp, true)){
-    //         $kode = sprintf('%03d', random_int(1, 999));
-    //     }
-    //     return $kode;
-    // }
+    
 }

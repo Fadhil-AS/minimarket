@@ -24,4 +24,15 @@ class Pembelian extends Model
     public function users(){
         return $this->hasOne('\App\Models\User', 'users_id', 'id');
     }
+
+    public static function kodeOtomatis(){
+        $kode = sprintf('%03d',random_int(1, 999));
+        $temp = [];
+        foreach(Pembelian::all(["kode_masuk"]) as $item){
+            array_push($temp, $item->kode);
+        }while(in_array($kode, $temp, true)){
+            $kode = sprintf('%08d', random_int(1, 99999999));
+        }
+        return $kode;
+    }
 }
