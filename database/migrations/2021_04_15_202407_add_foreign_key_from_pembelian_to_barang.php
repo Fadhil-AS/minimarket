@@ -14,7 +14,7 @@ class AddForeignKeyFromPembelianToBarang extends Migration
     public function up()
     {
         Schema::table('pembelian', function (Blueprint $table) {
-            $table->foreign('barang_id')->references('id')->on('barang')->onUpdate('CASCADE')->onDelete('CASCADE');
+            // $table->foreign('barang_id')->references('id')->on('barang')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

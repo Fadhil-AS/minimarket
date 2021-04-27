@@ -32,8 +32,14 @@
                 <a class="nav-link" href="{{url('/pembelian')}}"><i class="fas fa-shopping-cart"></i>&nbsp;Pembelian</a>
             </nav>
           </div>
-          <a class="nav-link" href="{{url('/penarikan')}}"><i class="fas fa-store-slash"></i>&nbsp;Penarikan Barang</a>
-          <a class="nav-link" href="#"><i class="fas fa-money-check-alt"></i>&nbsp;Laporan</a>
+          <a class="nav-link" href="{{url('/penarikan')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-store-slash"></i></div>
+                Penarikan Barang
+          </a>
+          <a class="nav-link" href="#">
+                <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+                Laporan
+          </a>
       </div>
   </div>
   <div class="sb-sidenav-footer">

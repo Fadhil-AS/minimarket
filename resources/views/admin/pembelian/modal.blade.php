@@ -30,7 +30,7 @@
                                 <td>{{$r->nama_barang}}</td>
                                 <td> {{$r->harga_jual}} </td>
                                 <td>
-                                    <button class="btn btn-success pilihBarangBtn"><i class="fas fa-cart-plus"></i></button>
+                                    <button type="button" data-id="{{$r->id}}" class="btn btn-success pilihBarangBtn"><i class="fas fa-cart-plus"></i></button>
                                 </td>
                           </tr>      
                         @endforeach 

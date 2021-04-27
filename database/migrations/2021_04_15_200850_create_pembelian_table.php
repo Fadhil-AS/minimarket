@@ -18,7 +18,7 @@ class CreatePembelianTable extends Migration
             $table->string('kode_masuk', 50);
             $table->date('tgl_masuk');
             $table->double('total');
-            $table->foreignId('barang_id');
+            // $table->foreignId('barang_id');
             $table->foreignId('pemasok_id');
             $table->foreignId('users_id');
             $table->timestamps();
